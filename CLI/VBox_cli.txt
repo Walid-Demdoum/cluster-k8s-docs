@@ -1,0 +1,99 @@
+sudo apt install virtualbox #install_vb
+vboxmanage import /path/to/virtual_machine.ova #import a preconfigured vm
+vboxmanage list vms #list all installed machines
+vboxmanage list runningvms #list all running vms
+vboxmanage startvm <vm_name_or_uuid> --type headless   #start a vm
+vboxmanage controlvm <vm_name_or_uuid> poweroff      #poweroff a vm
+vboxmanage unregistervm <vm_name_or_uuid> --delete    #delete an installed vm
+VBoxManage modifyvm --nested-hw-virt on #enable vtx
+https://download.virtualbox.org/virtualbox/6.1.44/Oracle_VM_VirtualBox_Extension_Pack-6.1.44-156814.vbox-extpack
+
+
+
+#############1. Verify Disk Recognition:
+
+Boot your Debian  VM.
+Open a terminal window.
+Run the command fdisk -l to list all attached disks. Identify the new 40GB disk by its size (usually labeled as /dev/sdX, where X is a letter).
+
+#############2. Partition the New Disk:
+
+Use the fdisk utility to partition the new disk. Caution: This process can potentially cause data loss if done incorrectly. Make sure you're working on the correct disk.
+Type fdisk /dev/sdX (replace /dev/sdX with the actual device name you identified in step 1).
+In fdisk, follow these steps carefully:
+Type n to create a new partition.
+Select 'p' for a primary partition.
+Choose partition number 1 (unless you have specific reasons to use a different number).
+Accept the default values for first and last sector to utilize the entire disk space.
+Type t to change the partition type.
+Enter 83 (Linux) as the code for a Linux partition.
+Type w to write the changes to the disk.
+
+#############3. Format the Partition:
+
+Exit fdisk by typing q.
+Run the command mkfs.ext4 /dev/sdX1 (replace /dev/sdX1 with the actual device name you created in step 2) to format the partition with the ext4 filesystem.
+
+
+#############4. Mount the New Partition:
+
+Create a mount point directory for the new partition:
+Bash
+sudo mkdir /mnt/postgres_data
+Use code with caution.
+content_copy
+Mount the partition to the newly created directory:
+Bash
+sudo mount /dev/sdX1 /mnt/postgres_data
+Use code with caution.
+content_copy
+
+
+#############5. Update /etc/fstab (Optional):
+
+To automatically mount the new partition at boot, edit the /etc/fstab file:
+Bash
+sudo nano /etc/fstab
+Use code with caution.
+content_copy
+Add a new line at the end of the file with the following format (replace /dev/sdX1 and /mnt/postgres_data with the actual values):
+/dev/sdX1  /mnt/postgres_data  ext4  defaults  0  2
+The options in this line:
+defaults: Specifies default mount options.
+0: Disables automatic backup (dump).
+2: Enables filesystem check on the second boot after a system crash.
+Save the changes and exit the editor (Ctrl+O, then Ctrl+X).
+
+#############6. Move PostgreSQL Data:
+
+Stop PostgreSQL: Before making any changes to the database directory, ensure PostgreSQL is stopped. Use the appropriate command (e.g., sudo systemctl stop postgresql).
+Move Data: Now that the new partition is mounted, carefully move the PostgreSQL data directory (/var/lib/postgres/data) to the new mount point:
+Bash
+sudo mv /var/lib/postgres/data /mnt/postgres_data/
+Use code with caution.
+content_copy
+Create a Symbolic Link: Create a symbolic link at the original location to point to the data directory on the new disk:
+Bash
+sudo ln -s /mnt/postgres_data/data /var/lib/postgres/
+Use code with caution.
+content_copy
+
+
+#############7. Verify Permissions:
+
+Check that the PostgreSQL user and group own the data directory and its contents:
+Bash
+sudo chown -R postgres:postgres /mnt/postgres_data
+Use code with caution.
+content_copy
+
+
+#############8. Restart PostgreSQL (if stopped):
+
+If you stopped PostgreSQL in step 6, start it again using the appropriate command (e.g., sudo systemctl start postgresql).
+Additional Considerations:
+
+Data Integrity: Double-check all steps to avoid data corruption. Backing up your database before proceeding is highly recommended.
+PostgreSQL Configuration: If you have specific configuration files referencing the data directory location, you might need to adjust them to point to the new location.
+Future Growth: If you anticipate needing more space for PostgreSQL data in the future, you can repeat this process to add another disk and expand further.
+By following these steps carefully, you'll successfully migrate /var/lib/postgres to the new 40GB disk on your Debian 9 virtual machine

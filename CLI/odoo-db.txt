@@ -1,0 +1,20 @@
+  Database related options:
+    -d DB_NAME, --database=DB_NAME
+                        specify the database name
+    -r DB_USER, --db_user=DB_USER
+                        specify the database user name
+    -w DB_PASSWORD, --db_password=DB_PASSWORD
+                        specify the database password
+    --pg_path=PG_PATH   specify the pg executable path
+    --db_host=DB_HOST   specify the database host
+    --db_port=DB_PORT   specify the database port
+    --db_sslmode=DB_SSLMODE
+                        specify the database ssl connection mode (see
+                        PostgreSQL documentation)
+    --db_maxconn=DB_MAXCONN
+                        specify the maximum number of physical connections to
+                        PostgreSQL
+    --db-template=DB_TEMPLATE
+                        specify a custom database template to create a new
+                        database
+ 
