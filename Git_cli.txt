@@ -1,6 +1,3 @@
-// ! git.mlmconseil.dz/
-
-
 git init                    #init the git
 git clone <url>             #clone project from URL
 
