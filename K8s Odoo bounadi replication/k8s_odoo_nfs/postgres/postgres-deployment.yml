@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment-nfs
+  labels:
+    app: postgres-nfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-nfs
+  template:
+    metadata:
+      labels:
+        app: postgres-nfs
+    spec:
+      nodeName: k8s-node1
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "odoo"
+        - name: POSTGRES_PASSWORD
+          value: "odoo"
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-storage
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc-nfs

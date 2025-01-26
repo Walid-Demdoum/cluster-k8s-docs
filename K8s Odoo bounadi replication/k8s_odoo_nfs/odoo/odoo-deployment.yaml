@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-deployment-nfs
+  labels:
+    app: odoo-nfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo-nfs
+  template:
+    metadata:
+      labels:
+        app: odoo-nfs
+    spec:
+      containers:
+      - name: odoo-nfs
+        imagePullPolicy: Always
+        image: registry.htcompass-dz.com/bounadi:1.0
+        ports:
+        - containerPort: 8069
+        env:
+        - name: HOST
+          value: postgres-service-nfs
+        - name: USER
+          value: odoo
+        - name: PASSWORD
+          value: odoo
+        volumeMounts:
+        - name: bounadi-data
+          mountPath: /var/lib/odoo
+      volumes:
+      - name: bounadi-data
+        persistentVolumeClaim:
+          claimName: bounadi-data-pvc-nfs
+      imagePullSecrets:
+      - name: registry-htcompass
