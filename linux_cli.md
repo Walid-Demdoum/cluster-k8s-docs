@@ -5,7 +5,7 @@ scp <-p> <user@host:pathto> <user@target:pathto>
 ```
 ### Wget command to a login secure website
 ```bash
-wget --user=w.demdoum@htcompass-dz.com --password='Do@!l*Hc21#' https://example.site
+wget --user="email" --password="password" https://example.site
 ```
 
 ### Check differences between 2 repositoroes
