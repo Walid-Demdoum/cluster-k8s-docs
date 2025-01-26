@@ -1,5 +1,3 @@
-# Cluster-k8s-docs
-
 # GlusterFS High Availability Setup
 
 This guide walks through setting up a shared volume with GlusterFS across a network to ensure high availability. The configuration involves three storage nodes (`fs1`, `fs2`, and `fs3`) and one worker node (`worker`). Each storage node hosts a replica of the Odoo cache, while the worker hosts the Odoo service (either source-installed or Dockerized).
