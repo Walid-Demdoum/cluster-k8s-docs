@@ -1,9 +1,0 @@
-scp <-p> <user@host:pathto> <user@target:pathto>
-
-wget --user=w.demdoum@htcompass-dz.com --password='Do@!l*Hc21#' https://example.site
-
-diff -bur folder1/ folder2/
-
-find /home/user/documents -maxdepth 1 -type d -exec basename {} \; | sort > directories.txt
-
-comm -23 file.txt file2.txt >> output.txt

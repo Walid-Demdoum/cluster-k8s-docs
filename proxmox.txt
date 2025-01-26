@@ -1,2 +1,0 @@
-tar xvf <template.ova>
-qm importdisk <machine id> <template.vmdk> data --format vmdk

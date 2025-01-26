@@ -1,4 +1,4 @@
-  Database related options:
+###  Database related options:
     -d DB_NAME, --database=DB_NAME
                         specify the database name
     -r DB_USER, --db_user=DB_USER

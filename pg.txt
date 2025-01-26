@@ -1,5 +1,0 @@
-/usr/lib/postgresql/15/bin/pg_ctl start -D /home/htcompass/postgres_cluster/cluster_major/
-/usr/lib/postgresql/15/bin/pg_ctl stop -D /home/htcompass/postgres_cluster/cluster_major/
-
-createdb db_name -O odoo
-pg_restore -c -d db_name -v path_to_backup.dump -p 5432

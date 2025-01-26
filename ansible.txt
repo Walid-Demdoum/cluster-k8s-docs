@@ -1,2 +1,0 @@
-ansible-playbook -i hosts playbook.yml -u username --ask-pass --ask-become-pass
- 
